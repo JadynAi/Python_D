@@ -99,20 +99,29 @@ road_list = [start_loc]
 # 证实是失败的路径
 failed_list = []
 
+# 没有到达终点就一直循环
 while road_list[len(road_list) - 1] != des_loc:
+    # 当前点
     cur_loc = road_list[len(road_list) - 1]
+    # 当前点四周所有可用点
     valid_loc_data = get_all_valid_loc(cur_loc)
+    # 如果可用点里包括已经走过的节点，则移除
     for cl in road_list:
         if cl in valid_loc_data:
             valid_loc_data.remove(cl)
+    # 如果可用点集合包括失败的节点，则移除
     for fl in failed_list:
         if fl in valid_loc_data:
             valid_loc_data.remove(fl)
+    # 没有可用点，视作失败，放弃该节点。从走过的路集合中移除掉
     if len(valid_loc_data) == 0:
         failed_list.append(road_list.pop())
         continue
+    # 用评估函数对可用点集合排序，取末端的值，加入走过的路集合中
     valid_loc_data.sort(key=compute_cost, reverse=True)
     road_list.append(valid_loc_data.pop())
 
-print("路径为 ： ", road_list)
+half = len(road_list) // 2
+print("路径为 ： ", road_list[:half])
+print("路径为 ： ", road_list[half:len(road_list)])
 print("抵达终点!共耗费{}步".format(len(road_list) - 2))
