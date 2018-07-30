@@ -101,6 +101,9 @@ failed_list = []
 
 # 没有到达终点就一直循环
 while road_list[len(road_list) - 1] != des_loc:
+    if len(road_list) == 0:
+        print("迷宫无解")
+        break
     # 当前点
     cur_loc = road_list[len(road_list) - 1]
     # 当前点四周所有可用点
